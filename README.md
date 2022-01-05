@@ -34,7 +34,7 @@ docker-compose logs -f
 
 ### Access to docker container
 ```
-docker-compose exec node /bin/sh
+docker-compose exec react /bin/bassh
 ```
 
 ## How the app was created

@@ -23,14 +23,18 @@ class Calculator extends React.Component {
   }
 
   select(nb) {
+    if (this.state.waitNb) {
+      this.setState({ total: 0 });
+    }
+    
     if (!this.state.waitOperation) {
-        this.setState(state => {
-          return {
-            total: parseFloat(state.currentNb) + parseFloat(state.total),
-            waitOperation: true,
-            currentNb: nb
-          }
-        });
+      this.setState(state => {
+        return {
+          total: parseFloat(state.currentNb) + parseFloat(state.total),
+          waitOperation: true,
+          currentNb: nb
+        }
+      });
     }
     else {
       this.setState(state => {
@@ -61,18 +65,20 @@ class Calculator extends React.Component {
       this.equal();
       this.setState({
         operation: sign,
-        waitOperation: false
+        waitOperation: false,
+        waitNb : false
       });
     }
   }
 
   equal() {
-    if (this.state.currentNb != 0){
+    if (this.state.currentNb != 0) {
       this.setState(state => {
         return {
           total: eval(state.total + state.operation + state.currentNb),
           operation: false,
-          currentNb : 0
+          currentNb: 0,
+          waitNb : true
         }
       });
       this.updateDisplay("total");
@@ -173,8 +179,20 @@ class Calculator extends React.Component {
           <Button buttonName="+/-" event={() => this.invert()} />
           <Button buttonName="%" event={() => this.percent()} />
         </div>
-        
+
         <Display value={this.state.display} />
+        total : {this.state.total}
+        <br />
+        display : {this.state.display}
+        <br />
+        currentNb : {this.state.currentNb}
+        <br />
+        waitOperation : {this.state.waitOperation ? "true" : "false"}
+        <br />
+        waitNb : {this.state.waitNb ? "true" : "false"}
+        <br />
+        operation : {this.state.operation ? "true" : "false"}
+        <br />
       </div>
     );
   }
