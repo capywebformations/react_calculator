@@ -18,15 +18,18 @@ class Calculator extends React.Component {
 
   updateDisplay(value) {
     this.setState(state => {
+      // Update display with specified value
       return { display: state[value] }
     });
   }
 
   select(nb) {
+    // If display wait for a number
     if (this.state.waitNb) {
       this.setState({ total: 0 });
     }
-    
+
+    // If there is no operation
     if (!this.state.waitOperation) {
       this.setState(state => {
         return {
@@ -36,6 +39,7 @@ class Calculator extends React.Component {
         }
       });
     }
+    // If an operation was pressed
     else {
       this.setState(state => {
         return { currentNb: parseFloat(state.currentNb + nb) }
@@ -49,6 +53,7 @@ class Calculator extends React.Component {
     const foundDot = regex.test(this.state.currentNb);
 
     if (!foundDot) {
+      // Wait for a number after a dot
       this.setState({ waitNb: true });
       this.setState(state => {
         return { currentNb: state.currentNb + "." }
@@ -61,12 +66,13 @@ class Calculator extends React.Component {
     const regex = /\.$/;
     const foundDotAtEnd = regex.test(this.state.currentNb);
 
+    // If the displayed number does not end with a dot
     if (this.state.display != 0 && !foundDotAtEnd) {
       this.equal();
       this.setState({
         operation: sign,
         waitOperation: false,
-        waitNb : false
+        waitNb: false
       });
     }
   }
@@ -78,7 +84,7 @@ class Calculator extends React.Component {
           total: eval(state.total + state.operation + state.currentNb),
           operation: false,
           currentNb: 0,
-          waitNb : true
+          waitNb: true
         }
       });
       this.updateDisplay("total");
@@ -94,6 +100,7 @@ class Calculator extends React.Component {
   }
 
   invert() {
+    // Invert current number and update display with it
     if (this.state.total != 0 && this.state.currentNb != 0) {
       this.setState(state => {
         return {
@@ -102,6 +109,7 @@ class Calculator extends React.Component {
       });
       this.updateDisplay("currentNb");
     }
+    // After pressing equal : Invert the total and update display with it
     else if (this.state.total != 0 && this.state.currentNb == 0) {
       this.setState(state => {
         return {
@@ -110,6 +118,7 @@ class Calculator extends React.Component {
       });
       this.updateDisplay("total");
     }
+    // Update current number with the inverted display value
     else {
       this.setState(state => {
         return {
@@ -121,6 +130,7 @@ class Calculator extends React.Component {
   }
 
   percent() {
+    // Divide current number and update display with it
     if (this.state.total != 0 && this.state.currentNb != 0) {
       this.setState(state => {
         return {
@@ -129,6 +139,7 @@ class Calculator extends React.Component {
       });
       this.updateDisplay("currentNb");
     }
+    // After pressing equal : Divide the total and update display with it
     else if (this.state.total != 0 && this.state.currentNb == 0) {
       this.setState(state => {
         return {
@@ -137,6 +148,7 @@ class Calculator extends React.Component {
       });
       this.updateDisplay("total");
     }
+    // Update current number with the divided display value
     else {
       this.setState(state => {
 
@@ -181,18 +193,23 @@ class Calculator extends React.Component {
         </div>
 
         <Display value={this.state.display} />
-        total : {this.state.total}
-        <br />
-        display : {this.state.display}
-        <br />
-        currentNb : {this.state.currentNb}
-        <br />
-        waitOperation : {this.state.waitOperation ? "true" : "false"}
-        <br />
-        waitNb : {this.state.waitNb ? "true" : "false"}
-        <br />
-        operation : {this.state.operation ? "true" : "false"}
-        <br />
+
+        <hr />
+        <div>
+          Debug values : <br />
+          total : {this.state.total}
+          <br />
+          display : {this.state.display}
+          <br />
+          currentNb : {this.state.currentNb}
+          <br />
+          waitOperation : {this.state.waitOperation ? "true" : "false"}
+          <br />
+          waitNb : {this.state.waitNb ? "true" : "false"}
+          <br />
+          operation : {this.state.operation ? "true" : "false"}
+          <br />
+        </div>
       </div>
     );
   }
